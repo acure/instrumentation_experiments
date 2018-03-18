@@ -26,8 +26,15 @@ public class ClassChangerThread implements Runnable {
         builder.append("{ System.out.print(\"#### INJECTED :: argument list : \"); ");
         builder.append(" for(int i=0; i<$args.length; i++) {System.out.print(\" arg[\"+i+\"] =\" + $args[i]); } ");
         builder.append(" System.out.println(\"\"); }");
-        //builder.append("{ System.out.println(\"#### INJECTED :: arg1 \" + $1 + \" :: arg2 \" + $2);}");
         method.insertBefore(builder.toString());
+        return method;
+    }
+
+    private CtMethod add_exception_catch(CtMethod method) throws CannotCompileException, NotFoundException {
+        StringBuilder builder = new StringBuilder();
+        for(CtClass eClass : method.getExceptionTypes()) {
+            method.addCatch("{ System.out.println(\"#### INJECTED :: Exception thrown : \" + $e); throw $e;}",eClass);
+        }
         return method;
     }
 
@@ -75,6 +82,7 @@ public class ClassChangerThread implements Runnable {
                 // modifications
 
                 method = add_arguments_list(method);
+                method = add_exception_catch(method);
 
                 HotSwapAgent.redefine(source, cc);
                 cc.detach();

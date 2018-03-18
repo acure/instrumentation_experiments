@@ -1,6 +1,8 @@
 package hou.xxx.testy;
 
 
+import java.io.NotActiveException;
+
 public class RequestSimulationThread implements Runnable{
 
     @Override
@@ -8,11 +10,16 @@ public class RequestSimulationThread implements Runnable{
         System.out.println(" RequestSimulationThread :: ---- EXECUTED ---- ");
         while (true) {
             TestSubclass testObject = new TestSubclass();
-            System.out.println("--------------------:: method A execution START ::-------------------");
+            System.out.println("--------------------:: method execution START ::-------------------");
             //testObject.methodA();
             //testObject.methodFromAbstractClass();
-            testObject.methodC(13,23);
-            System.out.println("--------------------:: method A execution END ::---------------------");
+            try {
+                testObject.methodC(665,1);
+            } catch (NotActiveException e) {
+                System.out.println(" EXCEPTION FINALLY RETHROWN TO ORYGINAL CODE ");
+                e.printStackTrace();
+            }
+            System.out.println("--------------------:: method execution END ::---------------------");
             try {
                 Thread.sleep(300);
             } catch (InterruptedException e) {

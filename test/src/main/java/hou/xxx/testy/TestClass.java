@@ -1,5 +1,7 @@
 package hou.xxx.testy;
 
+import java.io.NotActiveException;
+
 public class TestClass extends AbstractTestClass implements InterfaceA{
 
     public void methodFromInterfaceA() {
@@ -19,8 +21,11 @@ public class TestClass extends AbstractTestClass implements InterfaceA{
         return 1;
     }
 
-    public int methodC(int a, int b) {
+    public int methodC(int a, int b) throws NotActiveException{
         System.out.println("TestClass.methodC (" + a +", " + b +")");
+        if (a + b == 666) {
+            throw new NotActiveException("a + b == 666");
+        }
         return a + b;
     }
 
