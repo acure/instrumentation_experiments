@@ -6,7 +6,10 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>test</module>
-        <module>example01</module>
+        <module>war_example1</module>
+        <module>war_example2</module>
+        <module>commonlib</module>
+        <module>iagent</module>
     </modules>
 
     <properties>

@@ -1,6 +1,7 @@
 package hou.xxx.testy;
 
 import java.io.NotActiveException;
+import java.net.URLClassLoader;
 
 public class TestClass extends AbstractTestClass implements InterfaceA{
 
@@ -28,6 +29,7 @@ public class TestClass extends AbstractTestClass implements InterfaceA{
         }
         return a + b;
     }
+
 
     public void methodFromInterfaceForAbstractClass() {
         System.out.println("TestClass.methodFromInterfaceForAbstractClass");

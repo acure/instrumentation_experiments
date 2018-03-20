@@ -72,8 +72,26 @@ public class ClassChangerThread implements Runnable {
                 String className = "hou.xxx.testy.TestClass";
                 String methodName = "methodC";
 
+                HotSwapAgent hsa = new HotSwapAgent();
+                Class[] classes = hsa.instrumentation().getAllLoadedClasses();
+
+                System.out.println("_____________________________________________________________________________________________________________________");
+                for(Class clazz : classes) {
+                    System.out.println(" :: " + clazz.getName() + " : IN : " + clazz.getClassLoader());
+                }
+                System.out.println("_____________________________________________________________________________________________________________________");
+                try {
+                    Thread.sleep(10000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
 
                 Class source = Class.forName(className);
+
+                pool.insertClassPath(new LoaderClassPath(source.getClassLoader()));
+
+
                 cc = pool.get(className);
                 CtMethod method = cc.getDeclaredMethod(methodName);
                 
