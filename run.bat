@@ -1,1 +1,1 @@
-java -cp "./test/lib/javassist-3.20.0-GA.jar;./test/target/test-1.0-SNAPSHOT.jar" -javaagent:hotswap.jar hou.xxx.testy.ExampleApplication
+java -cp "./test/lib/javassist-3.20.0-GA.jar;./test/target/test-1.0-SNAPSHOT.jar;./libs/guava-24.1-jre.jar;./libs/commons-lang3-3.7.jar" -javaagent:hotswap.jar hou.xxx.testy.ExampleApplication

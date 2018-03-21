@@ -10,6 +10,7 @@
         <module>war_example2</module>
         <module>commonlib</module>
         <module>iagent</module>
+        <module>classscannertest</module>
     </modules>
 
     <properties>

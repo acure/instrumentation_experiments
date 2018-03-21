@@ -11,14 +11,14 @@ public class RequestSimulationThread implements Runnable{
         while (true) {
             TestSubclass testObject = new TestSubclass();
             System.out.println("--------------------:: method execution START ::-------------------");
-            //testObject.methodA();
+            testObject.methodA();
             //testObject.methodFromAbstractClass();
-            try {
-                testObject.methodC(665,1);
-            } catch (NotActiveException e) {
-                System.out.println(" EXCEPTION FINALLY RETHROWN TO ORYGINAL CODE ");
-                e.printStackTrace();
-            }
+//            try {
+//                testObject.methodC(665,1);
+//            } catch (NotActiveException e) {
+//                System.out.println(" EXCEPTION FINALLY RETHROWN TO ORYGINAL CODE ");
+//                e.printStackTrace();
+//            }
             System.out.println("--------------------:: method execution END ::---------------------");
             try {
                 Thread.sleep(300);

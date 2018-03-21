@@ -1,12 +1,15 @@
 package hou.xxx.testy;
 
 
+import com.google.common.base.Stopwatch;
 import javassist.*;
 import javassist.util.HotSwapAgent;
 import javassist.util.HotSwapper;
+import org.apache.commons.lang3.ClassUtils;
 
 import java.io.IOException;
-import java.util.Date;
+import java.lang.instrument.Instrumentation;
+import java.util.*;
 
 public class ClassChangerThread implements Runnable {
     private int value = 0;
@@ -47,6 +50,38 @@ public class ClassChangerThread implements Runnable {
 
 
 
+    private Map<Class<?>, Set<Class<?>>> scanClasses(Class[] classes) {
+        Map<Class<?>, Set<Class<?>>> parent2chilrden = new HashMap<>();
+        long stopwatch = new Date().getTime();
+        for(Class clazz : classes) {
+            List<Class<?>> interfaces = ClassUtils.getAllInterfaces(clazz);
+            List<Class<?>> superclasses = ClassUtils.getAllSuperclasses(clazz);
+
+            // parent 2 children
+            for (Class item : interfaces) {
+                Set<Class<?>> set = parent2chilrden.get(item);
+                if (set == null) {
+                    set = new HashSet<Class<?>>();
+                }
+                set.add(clazz);
+                parent2chilrden.put(item, set);
+            }
+            for(Class item : superclasses) {
+                Set<Class<?>> set = parent2chilrden.get(item);
+                if (set == null) {
+                    set = new HashSet<Class<?>>();
+                }
+                set.add(clazz);
+                parent2chilrden.put(item, set);
+            }
+        }
+        long end = new Date().getTime();
+        System.out.println(" fullscan : " + (end - stopwatch));
+        return parent2chilrden;
+    }
+
+
+
     @Override
     public void run() {
         System.out.println(">>>>>>>>>>>>>>> ClassChangerThread ---- EXECUTED ---- ");
@@ -63,30 +98,63 @@ public class ClassChangerThread implements Runnable {
 
             CtClass cc = null;
             try {
-                Long start = new Date().getTime();
+
                 // simple case - normal class
-                //String className = "hou.xxx.testy.TestClass";
-                //String methodName = "methodA";
+                String className = "hou.xxx.testy.TestClass";
+                String methodName = "methodA";
 
                 //method with two arguments
-                String className = "hou.xxx.testy.TestClass";
-                String methodName = "methodC";
+                //String className = "hou.xxx.testy.TestClass";
+                //String methodName = "methodC";
 
                 HotSwapAgent hsa = new HotSwapAgent();
+                Stopwatch stopwatchA = Stopwatch.createStarted();
                 Class[] classes = hsa.instrumentation().getAllLoadedClasses();
+                Map<Class<?>, Set<Class<?>>> result = scanClasses(classes);
 
-                System.out.println("_____________________________________________________________________________________________________________________");
-                for(Class clazz : classes) {
-                    System.out.println(" :: " + clazz.getName() + " : IN : " + clazz.getClassLoader());
-                }
-                System.out.println("_____________________________________________________________________________________________________________________");
+                System.out.println("#######################################################################");
+                System.out.println("size: " + result.size());
+
+                System.out.println("#######################################################################");
+                System.out.println("#######################################################################");
+                System.out.println(" scan for: " + InterfaceForAbstractClass.class.getName());
+                result.get(InterfaceForAbstractClass.class).stream().forEach(System.out::println);
+
+                System.out.println("#######################################################################");
+                System.out.println("#######################################################################");
+                System.out.println(" scan for: " + InterfaceA.class.getName());
+                result.get(InterfaceA.class).stream().forEach(System.out::println);
+
+                System.out.println("#######################################################################");
+                System.out.println("#######################################################################");
+                System.out.println(" scan for: " + AbstractTestClass.class.getName());
+                result.get(AbstractTestClass.class).stream().forEach(System.out::println);
+
+                System.out.println("#######################################################################");
+                System.out.println("#######################################################################");
+                System.out.println(" scan for: " + TestClass.class.getName());
+                result.get(TestClass.class).stream().forEach(System.out::println);
+
+                System.out.println("#######################################################################");
+                System.out.println("#######################################################################");
+                System.out.println(" scan for: " + Object.class.getName());
+                result.get(Object.class).stream().forEach(System.out::println);
+
+                System.out.println("#######################################################################");
+                System.out.println("#######################################################################");
+                stopwatchA.stop();
+                System.out.println(" -------------------------------------------- whole scan + allClasses = " + stopwatchA.elapsed() + " ---");
+
+
+
+
                 try {
                     Thread.sleep(10000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
 
-
+                Long start = new Date().getTime();
                 Class source = Class.forName(className);
 
                 pool.insertClassPath(new LoaderClassPath(source.getClassLoader()));
@@ -99,13 +167,14 @@ public class ClassChangerThread implements Runnable {
                 cc.defrost();
                 // modifications
 
-                method = add_arguments_list(method);
-                method = add_exception_catch(method);
+                method = add_timing(method);
+                //method = add_arguments_list(method);
+                //method = add_exception_catch(method);
 
                 HotSwapAgent.redefine(source, cc);
                 cc.detach();
                 Long end = new Date().getTime();
-                System.out.println(">>>>>>>>>>>>>>> :: SWAP = DONE ["+value+"] :: timing = " + (end-start) + "ms");
+                System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> :: SWAP = DONE ["+value+"] :: timing = " + (end-start) + "ms");
             } catch (NotFoundException e) {
                 e.printStackTrace();
             } catch (CannotCompileException e) {
