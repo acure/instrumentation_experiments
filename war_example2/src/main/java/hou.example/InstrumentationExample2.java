@@ -1,6 +1,6 @@
 package hou.example;
 
-import xxx.yyy.zzz.SuperCommonValueGenerator;
+import xxx.yyy.zzz.CommonClass;
 
 import java.io.*;
 import javax.servlet.*;
@@ -10,13 +10,13 @@ public class InstrumentationExample2 extends HttpServlet{
 
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException,IOException{
-        int value = new SuperCommonValueGenerator().getValue();
         response.setContentType("text/html");
         PrintWriter pw = response.getWriter();
         pw.println("<html>");
-        pw.println("<head><title>Example2 : value = "+value+"</title></title>");
+        pw.println("<head><title>Example2 : test CC</title></title>");
         pw.println("<body>");
-        pw.println("<h1>[Example2] VALUE = "+value+" and default value = 111</h1>");
+        new CommonClass().do_IOCC_CommonClass();
+        pw.println("<h1>[Example2] CommonClass.do_IOCC_CommonClass() </h1>");
         pw.println("</body></html>");
         System.out.println("------------------------------------ EXAMPLE 1 - doGet() ---------------------------------");
     }

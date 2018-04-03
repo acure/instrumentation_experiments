@@ -8,6 +8,7 @@ hou\xxx\testy\AbstractTestClass.class
 hou\xxx\testy\TestSubclass.class
 StripTool.class
 hou\xxx\testy\ClassWithStaticMethods.class
+hou\xxx\testy\TEST.class
 hou\xxx\testy\XXXTest.class
 hou\xxx\testy\YYY.class
 hou\xxx\testy\ClassChangerThread.class

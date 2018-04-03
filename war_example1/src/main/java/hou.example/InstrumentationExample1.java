@@ -1,5 +1,6 @@
 package hou.example;
 
+import xxx.yyy.zzz.AbstractClass;
 import xxx.yyy.zzz.CommonClass;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -24,6 +25,8 @@ public class InstrumentationExample1 extends HttpServlet {
             case "do_IOAC_Abstract":
                 new CommonClass().do_IOAC_Abstract();
                 break;
+            case "do_IOAC_AbstractClass":
+                new CommonClass().do_IOAC_AbstractClass();
             case "do_IOPAC_AbstractClass":
                 new CommonClass().do_IOPAC_AbstractClass();
                 break;
@@ -34,7 +37,7 @@ public class InstrumentationExample1 extends HttpServlet {
                 new CommonClass().do_IOAC_OVERRIDEDinCommonClass();
                 break;
             case "do_IOAC_Static":
-                new CommonClass().do_IOAC_Static();
+                AbstractClass.do_IOAC_Static();
                 break;
             case "do_PAC_AbstractClass":
                 new CommonClass().do_PAC_AbstractClass();
@@ -61,6 +64,7 @@ public class InstrumentationExample1 extends HttpServlet {
         pw.println("<a href=\"test?test=do_IOCC_CommonClass\">do_IOCC_CommonClass</a><br>");
         pw.println("<a href=\"test?test=do_IOAC_CommonClass\">do_IOAC_CommonClass</a><br>");
         pw.println("<a href=\"test?test=do_IOAC_Abstract\">do_IOAC_Abstract</a><br>");
+        pw.println("<a href=\"test?test=do_IOAC_AbstractClass\">do_IOAC_AbstractClass</a><br>");
         pw.println("<a href=\"test?test=do_IOPAC_AbstractClass\">do_IOPAC_AbstractClass</a><br>");
         pw.println("<a href=\"test?test=do_IOPAC_CommonClass\">do_IOPAC_CommonClass</a><br>");
         pw.println("<a href=\"test?test=do_IOAC_OVERRIDEDinCommonClass\">do_IOAC_OVERRIDEDinCommonClass</a><br>");

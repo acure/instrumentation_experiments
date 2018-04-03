@@ -9,6 +9,7 @@ public abstract class ParentAbstractClass implements InterfaceOfParentAbstracCla
 
     @Override
     public String do_IOPAC_ParentAbstractClass() {
+        System.out.println("------------------------------ do_IOPAC_ParentAbstractClass ------------------------------");
         return "ParentAbstractClass#do_IOPAC_ParentAbstractClass";
     }
 }
