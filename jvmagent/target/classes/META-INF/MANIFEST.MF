@@ -1,0 +1,5 @@
+Manifest-Version: 1.0
+Premain-Class: xxx.yyy.zzz.JVMAgent
+Agent-Class: xxx.yyy.zzz.JVMAgent
+Can-Redefine-Classes: true
+Can-Retransform-Classes: true
